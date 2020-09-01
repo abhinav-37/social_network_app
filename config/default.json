@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://admin-Abhinav:admin-Abhinav@cluster0-fz1t0.mongodb.net/socialDB",
+    "jwtConfig": "myjwtconfig"
+}
