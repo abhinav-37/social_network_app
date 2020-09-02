@@ -6,7 +6,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 const { findOneAndUpdate } = require("../../models/Profile");
-const { Router } = require("express");
+const { Router, response } = require("express");
 const config = require("config");
 const request = require("request");
 
@@ -314,6 +314,15 @@ router.get("/github/:username", (req, res) => {
             method: "GET",
             headers: { "user-agent": "node.js" },
         };
+        request(options, (error, response, body) => {
+            if (error) console.error(error);
+
+            if (response.statusCode !== 200) {
+                res.json({ msg: "github profile doesnot exist" });
+            } else {
+                res.json(JSON.parse(body));
+            }
+        });
     } catch (err) {
         console.error(err);
     }
