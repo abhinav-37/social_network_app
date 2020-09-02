@@ -7,13 +7,13 @@ const {
     check,
     valitadionResult,
     validationResult,
-} = require("express-validator/check");
+} = require("express-validator");
 const auth = require("../../middleware/auth");
 
 //@route POST api/posts
 //@desc  for authentication
 //@access Private
-router.get(
+router.post(
     "/",
     [auth, [check("text", "text is requred").not().isEmpty()]],
     async (req, res) => {
@@ -22,13 +22,12 @@ router.get(
             return res.status("400").json({ error: error.array() });
         }
         try {
-            let user = (await User.findById(req.user.id)).isSelected(
-                "-password"
-            );
+            let user = await User.findById(req.user.id).select("-password");
             const newPost = {
                 text: req.body.text,
                 name: user.name,
                 avatar: user.avatar,
+                user: req.user.id,
             };
 
             const post = new Posts(newPost);
