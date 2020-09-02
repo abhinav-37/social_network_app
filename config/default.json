@@ -1,4 +1,6 @@
 {
     "mongoURI": "mongodb+srv://admin-Abhinav:admin-Abhinav@cluster0-fz1t0.mongodb.net/socialDB",
-    "jwtConfig": "myjwtconfig"
+    "jwtConfig": "myjwtconfig",
+    "githubClientId": "432f946677db6ba7fe68",
+    "githubSecret": "beeea66addb3ca9de4e7dec3cf7b0e677209a971"
 }
