@@ -171,14 +171,14 @@ router.post(
         }
         try {
             let user = await User.findById(req.user.id).select("-password");
-
+            console.log(user);
             const post = await Posts.findById(req.params.id);
 
             let newComment = {
                 user: req.user.id,
                 text: req.body.text,
-                name: req.body.name,
-                avatar: req.body.avatar,
+                name: user.name,
+                avatar: user.avatar,
             };
 
             post.comments.unshift(newComment);
@@ -192,4 +192,42 @@ router.post(
         }
     }
 );
+
+//@route DELETE api/posts/comment/:id/:comment_id
+//@desc  for removing comments
+//@access Private
+router.delete("/comment/:id/:comment_id", auth, async (req, res) => {
+    try {
+        const post = await Posts.findById(req.params.id);
+        //check if the post has that comment
+
+        const comment = post.comments.find(
+            (comment) => comment.id === req.params.comment_id
+        );
+
+        if (!comment) {
+            res.status(400).json({ msg: "comment doesnot exist" });
+        } else {
+            if (comment.user.toString() !== req.user.id) {
+                res.status(400).json({
+                    msg: "user not authorised to delete the comment",
+                });
+            } else {
+                const commentIndex = post.comments.findIndex(
+                    (comment) => comment.id === req.params.comment_id
+                );
+                post.comments.splice(commentIndex, 1);
+                await post.save();
+                res.json(post);
+            }
+        }
+    } catch (error) {
+        if (error.kind === "ObjectId") {
+            res.status(404).json({ msg: "post not found" });
+        } else {
+            console.error(error);
+            res.status(500).send("server error");
+        }
+    }
+});
 module.exports = router;
