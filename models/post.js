@@ -38,6 +38,12 @@ const postSchema = new schema({
                 type: Date,
                 default: Date.now,
             },
+            name: {
+                type: String,
+            },
+            avatar: {
+                type: String,
+            },
         },
     ],
     date: {
