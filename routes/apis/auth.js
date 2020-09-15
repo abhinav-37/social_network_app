@@ -23,7 +23,7 @@ router.get("/", auth, (req, res) => {
         res.status(500).send("server error");
     }
 });
-//@route    POST api/users
+//@route    POST api/auth
 //@desc     for authenticating users
 //@access   public
 router.post(
